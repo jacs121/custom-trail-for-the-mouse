@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Trail</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .cloud {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background-color: rgb(255, 255, 255);
+            animation: cloudEffect 0.8s forwards;
+        }
+
+        @keyframes cloudEffect {
+            0% {
+                opacity: 1;
+                transform: scale(1) translate(0, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(2) translate(var(--offsetX), var(--offsetY));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function mouseMove(x, y) {
+            for (let i = 0; i < 3; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                const angle = Math.random() * 2 * Math.PI;
+                const size = Math.random() * 2 + 10;
+                const distance = Math.random() * 10;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                cloud.style.left = `${x + offsetX - size / 2}px`;
+                cloud.style.top = `${y + offsetY - size / 2}px`;
+                cloud.style.width = `${size}px`;
+                cloud.style.height = `${size}px`;
+                cloud.style.setProperty('--offsetX', `0px`);
+                cloud.style.setProperty('--offsetY', `0px`);
+
+                document.body.appendChild(cloud);
+
+                setTimeout(() => {
+                    cloud.remove();
+                }, 800);
+            }
+        };
+
+        function mouseClick(x, y) {
+            // make a cloud poof that expands outward with dynamic translate
+            for (let i = 0; i < 20; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                const angle = Math.random() * 2 * Math.PI;
+                const size = Math.random() * 2 + 5;
+                const distance = Math.random() * 20;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                cloud.style.left = `${x + offsetX - size / 2}px`;
+                cloud.style.top = `${y + offsetY - size / 2}px`;
+                cloud.style.width = `${size}px`;
+                cloud.style.height = `${size}px`;
+                cloud.style.setProperty('--offsetX', `${offsetX/2}px`);
+                cloud.style.setProperty('--offsetY', `${offsetY/2}px`);
+
+                document.body.appendChild(cloud);
+
+                setTimeout(() => {
+                    cloud.remove();
+                }, 800);
+            }
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            mouseMove(event.clientX, event.clientY);
+        });
+
+        document.addEventListener('click', (event) => {
+            mouseClick(event.clientX, event.clientY);
+        });
+    </script>
+</body>
+
+</html>
+        

@@ -1,0 +1,14 @@
+{
+    "shape": "Square",
+    "colors": [
+        "#ffaaff"
+    ],
+    "size": 1,
+    "animation": "Fade",
+    "clickEffect": "None",
+    "style": "Solid",
+    "amount": 1,
+    "colorPickType": "random",
+    "separationDistance": 1,
+    "separationAngle": 1
+}

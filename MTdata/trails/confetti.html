@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Trail</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .square {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            pointer-events: none;
+            animation: squareEffect 0.75s ease-out forwards;
+        }
+
+        @keyframes squareEffect {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(var(--offsetX), var(--offsetY));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function mouseMove(x, y, args) {
+            for (let i = 0; i < 5; i++) {
+                const square = document.createElement('div');
+
+                const angle = Math.random() * 1.75 * Math.PI;
+                const distance = Math.random() * 5;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+
+                square.classList.add('square');
+                const hue = Math.floor(Math.random() * 360);
+                
+                square.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+
+                square.style.left = `${x + offsetX - 5 / 2}px`;
+                square.style.top = `${y + offsetY - 5 / 2}px`;
+                square.style.setProperty('--offsetX', `${offsetX*10}px`);
+                square.style.setProperty('--offsetY', `${Math.abs(offsetY)*10}px`);
+
+
+                document.body.appendChild(square);
+                setTimeout(() => {
+                    square.remove();
+                }, 500);
+            }
+
+        };
+
+        function mouseClick(x, y) {
+            // make a cloud poof that expands outward with dynamic translate
+            for (let i = 0; i < 50; i++) {
+            const square = document.createElement('div');
+
+            const angle = Math.random() * 1.75 * Math.PI;
+            const distance = Math.random() * 5;
+            const offsetX = Math.cos(angle) * distance;
+            const offsetY = Math.sin(angle) * distance;
+
+
+            square.classList.add('square');
+            const hue = Math.floor(Math.random() * 360);
+            
+            square.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+
+            square.style.left = `${x + offsetX - 5 / 2}px`;
+            square.style.top = `${y + offsetY - 5 / 2}px`;
+            square.style.setProperty('--offsetX', `${offsetX * 10}px`);
+            square.style.setProperty('--offsetY', `${offsetY * 10}px`);
+
+
+            document.body.appendChild(square);
+            setTimeout(() => {
+                    square.remove();
+                }, 500);
+            }
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            mouseMove(event.clientX, event.clientY, { color: "rainbow" });
+        });
+
+        document.addEventListener('click', (event) => {
+            mouseClick(event.clientX, event.clientY, {color: "rainbow"});
+        });
+    </script>
+</body>
+
+</html>
+        

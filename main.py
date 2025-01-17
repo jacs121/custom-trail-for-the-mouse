@@ -10,14 +10,14 @@ from PySide6.QtGui import QCursor
 import mouse
 import random
 
-if not os.path.exists("./custom_trails"):
-    os.makedirs("./custom_trails")
+if not os.path.exists("./MTdata/custom_trails"):
+    os.makedirs("./MTdata/custom_trails")
 
-if not os.path.exists("./trails"):
-    os.makedirs("./trails")
+if not os.path.exists("./MTdata/trails"):
+    os.makedirs("./MTdata/trails")
 
-if not os.path.exists("./trails/clouds.html"):
-    open("./trails/clouds.html", "w").write(
+if not os.path.exists("./MTdata/trails/clouds.html"):
+    open("./MTdata/trails/clouds.html", "w").write(
         """
 <!DOCTYPE html>
 <html lang="en">
@@ -121,8 +121,8 @@ if not os.path.exists("./trails/clouds.html"):
 </html>
         """)
 
-if not os.path.exists("./trails/stars.html"):
-    open("./trails/stars.html", "w").write(
+if not os.path.exists("./MTdata/trails/stars.html"):
+    open("./MTdata/trails/stars.html", "w").write(
         """
 <!DOCTYPE html>
 <html lang="en">
@@ -240,8 +240,8 @@ if not os.path.exists("./trails/stars.html"):
 </html>
         """)
 
-if not os.path.exists("./trails/confetti.html"):
-    open("./trails/confetti.html", "w").write(
+if not os.path.exists("./MTdata/trails/confetti.html"):
+    open("./MTdata/trails/confetti.html", "w").write(
         """
 <!DOCTYPE html>
 <html lang="en">
@@ -353,7 +353,7 @@ if not os.path.exists("./trails/confetti.html"):
         """)
 
 if not os.path.exists("default.html"):
-    open("default.html", "w").write(
+    open("./MTdata/default.html", "w").write(
         """
 <!DOCTYPE html>
 <html lang="en">
@@ -498,10 +498,10 @@ if not os.path.exists("default.html"):
 # Dictionary of all available trail HTML files
 trails = {
     os.path.basename(file).split(".")[0].title(): os.path.join(os.path.dirname(__file__), file)
-    for file in glob.glob("./trails/*.html")
+    for file in glob.glob("./MTdata/trails/*.html")
 }
 
-for trail in glob.glob("./custom_trails/*.json"):
+for trail in glob.glob("./MTdata/custom_trails/*.json"):
     trails.update({os.path.basename(trail).split(
         ".")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})
 
@@ -563,7 +563,7 @@ class ScreenTrail(QWebEngineView):
         # Use loadFinished to apply the config after the page is fully loaded
         self.page().loadFinished.connect(lambda: self.apply_trail_config(config))
         self.setUrl(QUrl.fromLocalFile(os.path.join(
-            os.path.dirname(__file__), "trails", "default.html")))
+            os.path.dirname(__file__), "MTdata", "default.html")))
 
     def apply_trail_config(self, config):
         # Determine color based on the configuration
@@ -666,7 +666,7 @@ class MainSettingsWindow(QMainWindow):
         global trails
         editor = TrailEditor(self)
         if editor.exec():
-            for trail in glob.glob("./custom_trails/*.json"):
+            for trail in glob.glob("./MTdata/custom_trails/*.json"):
                 trails.update({os.path.basename(trail).split(
                     ".")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})
                 self.trail_selector.clear()
@@ -823,8 +823,8 @@ class TrailEditor(QDialog):
             filename = answer[0]
         else:
             return
-        os.makedirs("custom_trails", exist_ok=True)
-        with open(f"custom_trails/{filename}.json", 'w') as f:
+        os.makedirs("./MTdata/custom_trails", exist_ok=True)
+        with open(f"./MTdata/custom_trails/{filename}.json", 'w') as f:
             json.dump(config, f, indent=4)
         self.accept()
 
