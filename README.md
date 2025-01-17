@@ -6,7 +6,6 @@ This is a program that adds custom paths to your mouse.
 
 By making an application full screen, not visible in the taskbar, invisible and making the mouse move through it, this software allows you to display HTML files on the screen (don't worry you get stuck and the mouse can't move through the window click on it and it will close itself)
 
-
 ##### trails html structure
 
 each trail realy has just the style (css) code and the script (js) code.
@@ -25,15 +24,14 @@ the only thing that you need to know is the functions:
 
 the python script
 
-
 ##### **How do I use it**
 
 1. Install python: I'm using 3.12.6 but you can use any version that is compatible with pyside6
 2. Install dependesis:
 
 * pyside6
-  *accident
-  *globus
+  mouse
+  glob
 
 3. Run the application: The only thing you really need is the main.py and trails folder from this project everything else (like custom_trails) is created automatically
 4. Enjoy: Are custom trails still a work in progress, the existing trails are finished

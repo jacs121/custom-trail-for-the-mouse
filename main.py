@@ -10,6 +10,489 @@ from PySide6.QtGui import QCursor
 import mouse
 import random
 
+if not os.path.exists("./custom_trails"):
+    os.makedirs("./custom_trails")
+
+if not os.path.exists("./trails"):
+    os.makedirs("./trails")
+
+if not os.path.exists("./trails/clouds.html"):
+    open("./trails/clouds.html", "w").write(
+        """
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Trail</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .cloud {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background-color: rgb(255, 255, 255);
+            animation: cloudEffect 0.8s forwards;
+        }
+
+        @keyframes cloudEffect {
+            0% {
+                opacity: 1;
+                transform: scale(1) translate(0, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(2) translate(var(--offsetX), var(--offsetY));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function mouseMove(x, y) {
+            for (let i = 0; i < 3; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                const angle = Math.random() * 2 * Math.PI;
+                const size = Math.random() * 2 + 10;
+                const distance = Math.random() * 10;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                cloud.style.left = `${x + offsetX - size / 2}px`;
+                cloud.style.top = `${y + offsetY - size / 2}px`;
+                cloud.style.width = `${size}px`;
+                cloud.style.height = `${size}px`;
+                cloud.style.setProperty('--offsetX', `0px`);
+                cloud.style.setProperty('--offsetY', `0px`);
+
+                document.body.appendChild(cloud);
+
+                setTimeout(() => {
+                    cloud.remove();
+                }, 800);
+            }
+        };
+
+        function mouseClick(x, y) {
+            // make a cloud poof that expands outward with dynamic translate
+            for (let i = 0; i < 20; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                const angle = Math.random() * 2 * Math.PI;
+                const size = Math.random() * 2 + 5;
+                const distance = Math.random() * 20;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                cloud.style.left = `${x + offsetX - size / 2}px`;
+                cloud.style.top = `${y + offsetY - size / 2}px`;
+                cloud.style.width = `${size}px`;
+                cloud.style.height = `${size}px`;
+                cloud.style.setProperty('--offsetX', `${offsetX/2}px`);
+                cloud.style.setProperty('--offsetY', `${offsetY/2}px`);
+
+                document.body.appendChild(cloud);
+
+                setTimeout(() => {
+                    cloud.remove();
+                }, 800);
+            }
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            mouseMove(event.clientX, event.clientY);
+        });
+
+        document.addEventListener('click', (event) => {
+            mouseClick(event.clientX, event.clientY);
+        });
+    </script>
+</body>
+
+</html>
+        """)
+
+if not os.path.exists("./trails/stars.html"):
+    open("./trails/stars.html", "w").write(
+        """
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Trail</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .star {
+            position: absolute;
+            background-color:cornsilk;
+            width: 10px;
+            height: 10px;
+            animation: starEffect 0.5s ease-out forwards;
+            clip-path: polygon(50% 5%, 61% 40%, 98% 40%, 68% 62%, 79% 96%, 50% 75%, 21% 96%, 32% 62%, 2% 40%, 39% 40%)
+        }
+
+        @keyframes starEffect {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--offsetX), var(--offsetY));
+                rotate: 45deg;
+            }
+        }
+
+        @keyframes starClick {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+            
+            100% {
+                opacity: 0;
+                transform: translate(var(--offsetX), var(--offsetY)+10);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function mouseMove(x, y, args) {
+            for (let i = 0; i < 2; i++) {
+                const star = document.createElement('div');
+
+                const angle = Math.random() * 1.75 * Math.PI;
+                const distance = Math.random() * 5;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+
+                star.classList.add('star');
+
+                star.style.left = `${x + offsetX - 10 / 2}px`;
+                star.style.top = `${y + offsetY - 10 / 2}px`;
+                star.style.setProperty('--offsetX', `${offsetX*10}px`);
+                star.style.setProperty('--offsetY', `${Math.abs(offsetY)*10}px`);
+
+
+                document.body.appendChild(star);
+                setTimeout(() => {
+                    star.remove();
+                }, 500);
+            }
+
+        };
+
+        function mouseClick(x, y) {
+            // make a cloud poof that expands outward with dynamic translate
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('div');
+
+                const angle = Math.random() * 1.75 * Math.PI;
+                const distance = Math.random() * 5;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+
+                star.classList.add('star');
+
+                star.style.left = `${x + offsetX - 5 / 2}px`;
+                star.style.top = `${y + offsetY - 5 / 2}px`;
+                star.style.setProperty('--offsetX', `${offsetX * 10}px`);
+                star.style.setProperty('--offsetY', `${Math.abs(offsetY) * 10}px`);
+
+
+            document.body.appendChild(star);
+            setTimeout(() => {
+                    star.remove();
+                }, 500);
+            }
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            mouseMove(event.clientX, event.clientY, { color: "rainbow" });
+        });
+
+        document.addEventListener('click', (event) => {
+            mouseClick(event.clientX, event.clientY, {color: "rainbow"});
+        });
+    </script>
+</body>
+
+</html>
+        """)
+
+if not os.path.exists("./trails/confetti.html"):
+    open("./trails/confetti.html", "w").write(
+        """
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Trail</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .square {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            pointer-events: none;
+            animation: squareEffect 0.75s ease-out forwards;
+        }
+
+        @keyframes squareEffect {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(var(--offsetX), var(--offsetY));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function mouseMove(x, y, args) {
+            for (let i = 0; i < 5; i++) {
+                const square = document.createElement('div');
+
+                const angle = Math.random() * 1.75 * Math.PI;
+                const distance = Math.random() * 5;
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+
+                square.classList.add('square');
+                const hue = Math.floor(Math.random() * 360);
+                
+                square.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+
+                square.style.left = `${x + offsetX - 5 / 2}px`;
+                square.style.top = `${y + offsetY - 5 / 2}px`;
+                square.style.setProperty('--offsetX', `${offsetX*10}px`);
+                square.style.setProperty('--offsetY', `${Math.abs(offsetY)*10}px`);
+
+
+                document.body.appendChild(square);
+                setTimeout(() => {
+                    square.remove();
+                }, 500);
+            }
+
+        };
+
+        function mouseClick(x, y) {
+            // make a cloud poof that expands outward with dynamic translate
+            for (let i = 0; i < 50; i++) {
+            const square = document.createElement('div');
+
+            const angle = Math.random() * 1.75 * Math.PI;
+            const distance = Math.random() * 5;
+            const offsetX = Math.cos(angle) * distance;
+            const offsetY = Math.sin(angle) * distance;
+
+
+            square.classList.add('square');
+            const hue = Math.floor(Math.random() * 360);
+            
+            square.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+
+            square.style.left = `${x + offsetX - 5 / 2}px`;
+            square.style.top = `${y + offsetY - 5 / 2}px`;
+            square.style.setProperty('--offsetX', `${offsetX * 10}px`);
+            square.style.setProperty('--offsetY', `${offsetY * 10}px`);
+
+
+            document.body.appendChild(square);
+            setTimeout(() => {
+                    square.remove();
+                }, 500);
+            }
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            mouseMove(event.clientX, event.clientY, { color: "rainbow" });
+        });
+
+        document.addEventListener('click', (event) => {
+            mouseClick(event.clientX, event.clientY, {color: "rainbow"});
+        });
+    </script>
+</body>
+
+</html>
+        """)
+
+if not os.path.exists("default.html"):
+    open("default.html", "w").write(
+        """
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trail</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .trail {
+            position: absolute;
+            pointer-events: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .click-effect {
+            position: absolute;
+            pointer-events: none;
+            transform: scale(0);
+            animation: click-effect-animation 0.5s ease-out forwards;
+        }
+
+        @keyframes click-effect-animation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let trailConfig = {
+            size: 10,
+            color: "red",
+            animation: "none",
+            clickEffect: "none",
+            style: "solid",
+            amount: 1,
+            shape: "circle",
+        };
+
+        function setTrailConfig(config) {
+            trailConfig = { ...trailConfig, ...config };
+        }
+
+        function mouseMove(x, y, settings) {
+            const trail = document.createElement("div");
+
+            const angle = Math.random() * trailConfig["separationAngle"] * Math.PI;
+            const distance = Math.random() * trailConfig["separationDistance"];
+            const offsetX = Math.cos(angle) * distance;
+            const offsetY = Math.sin(angle) * distance;
+
+            trail.className = "trail";
+            trail.style.left = `${x + offsetX - trailConfig.size / 2}px`;
+            trail.style.top = `${y + offsetY - trailConfig.size / 2}px`;
+            trail.style.left = x - trailConfig.size / 2 + "px";
+            trail.style.top = y - trailConfig.size / 2 + "px";
+            trail.style.width = trailConfig.size + "px";
+            trail.style.height = trailConfig.size + "px";
+            trail.style.background = trailConfig.color || "red";
+
+            if (trailConfig.shape === "Circle") {
+                trail.style.borderRadius = "50%";
+            } else if (trailConfig.shape === "Star") {
+                trail.style.clipPath = "polygon(50% 5%, 61% 40%, 98% 40%, 68% 62%, 79% 96%, 50% 75%, 21% 96%, 32% 62%, 2% 40%, 39% 40%)";
+            }
+            if (trailConfig.style === "dashed") {
+                trail.style.border = `2px dashed ${trailConfig.color}`;
+                trail.style.background = "transparent";
+            }
+
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 500); // Remove after animation
+        }
+
+        function mouseClick(x, y, settings) {
+            if (trailConfig.clickEffect === "Burst") {
+                const trail = document.createElement("div");
+
+                const angle = Math.random() * trailConfig["separationAngle"] * Math.PI;
+                const distance = Math.random() * trailConfig["separationDistance"];
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                trail.className = "click-effect";
+                trail.style.left = `${x + offsetX - trailConfig.size / 2}px`;
+                trail.style.top = `${y + offsetY - trailConfig.size / 2}px`;
+                trail.style.width = trailConfig.size + "px";
+                trail.style.height = trailConfig.size + "px";
+                trail.style.border = `2px solid ${trailConfig.color || "red"}`;
+                
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 500); // Remove after animation
+            } else if (trailConfig.clickEffect === "Glow") {
+                const trail = document.createElement("div");
+
+                const angle = Math.random() * trailConfig["separationAngle"] * Math.PI;
+                const distance = Math.random() * trailConfig["separationDistance"];
+                const offsetX = Math.cos(angle) * distance;
+                const offsetY = Math.sin(angle) * distance;
+
+                trail.className = "click-effect";
+                trail.style.left = `${x + offsetX - trailConfig.size / 2}px`;
+                trail.style.top = `${y + offsetY - trailConfig.size / 2}px`;
+                trail.style.left = x - trailConfig.size / 2 + "px";
+                trail.style.top = y - trailConfig.size / 2 + "px";
+                trail.style.width = trailConfig.size + "px";
+                trail.style.height = trailConfig.size + "px";
+                trail.style.background = `${trailConfig.color || "red"}`;
+                trail.style.boxShadow = `0 0 10px ${trailConfig.color || "red"}`;
+
+                if (trailConfig.shape === "Circle") {
+                    trail.style.borderRadius = "50%";
+                } else if (trailConfig.shape === "Star") {
+                    trail.style.clipPath = "polygon(50% 5%, 61% 40%, 98% 40%, 68% 62%, 79% 96%, 50% 75%, 21% 96%, 32% 62%, 2% 40%, 39% 40%)";
+                }
+
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 500);
+            }
+        }
+    </script>
+</body>
+
+</html>
+        """)
 
 
 # Dictionary of all available trail HTML files
