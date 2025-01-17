@@ -11,13 +11,14 @@ import mouse
 import random
 
 
+
 # Dictionary of all available trail HTML files
 trails = {
     os.path.basename(file).split(".")[0].title(): os.path.join(os.path.dirname(__file__), file)
-    for file in glob.glob("trails/*.html")
+    for file in glob.glob("./trails/*.html")
 }
 
-for trail in glob.glob("custom_trails/*.json"):
+for trail in glob.glob("./custom_trails/*.json"):
     trails.update({os.path.basename(trail).split(
         ".")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})
 
@@ -182,7 +183,7 @@ class MainSettingsWindow(QMainWindow):
         global trails
         editor = TrailEditor(self)
         if editor.exec():
-            for trail in glob.glob("custom_trails/*.json"):
+            for trail in glob.glob("./custom_trails/*.json"):
                 trails.update({os.path.basename(trail).split(
                     ".")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})
                 self.trail_selector.clear()
