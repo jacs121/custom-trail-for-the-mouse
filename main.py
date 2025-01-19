@@ -10,6 +10,7 @@ from PySide6.QtGui import QCursor
 import mouse
 import random
 
+
 if not os.path.exists("./MTdata/custom_trails"):
     os.makedirs("./MTdata/custom_trails")
 
@@ -499,6 +500,7 @@ if not os.path.exists("default.html"):
 trails = {
     os.path.basename(file).split(".")[0].title(): os.path.join(os.path.dirname(__file__), file)
     for file in glob.glob("./MTdata/trails/*.html")
+    for file in glob.glob("./trails/*.html")
 }
 
 for trail in glob.glob("./MTdata/custom_trails/*.json"):
