@@ -588,7 +588,6 @@ if not os.path.exists("./MTdata/trails/smooth.html"):
 trails = {
     os.path.basename(file).split(".")[0].title(): os.path.join(os.path.dirname(__file__), file)
     for file in glob.glob("./MTdata/trails/*.html")
-    for file in glob.glob("./trails/*.html")
 }
 
 for trail in glob.glob("./MTdata/custom_trails/*.json"):
