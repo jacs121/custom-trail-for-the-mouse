@@ -8,7 +8,10 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.AddCompLib
 build/
+to exe.bat
+.vscode/
 develop-eggs/
 dist/
 downloads/
