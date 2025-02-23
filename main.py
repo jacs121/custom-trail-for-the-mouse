@@ -8,8 +8,55 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt, QUrl, QTimer, QPoint, QThread
 from PySide6.QtGui import QCursor
 import mouse
+import requests
 import random
+import win11toast
 
+# Define current release version
+release_version = "v1.0.1"
+
+
+# GitHub repository details
+GITHUB_REPO = "jacs121/custom-trail-for-the-mouse"
+LATEST_RELEASE_API = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+
+def check_for_update():
+    try:
+        response = requests.get(LATEST_RELEASE_API, timeout=5)
+        response.raise_for_status()
+        latest_release = response.json()
+        
+        latest_version = latest_release["tag_name"]
+        download_url = latest_release["assets"][0]["browser_download_url"]
+
+        if latest_version != release_version:
+            win11toast.toast(
+                "CMT: Update Available",
+                f"A new version ({latest_version}) is available. Click to download.",
+                on_click=lambda: download_update(download_url, latest_version)
+            )
+    except Exception as e:
+        print(f"Failed to check for updates: {e}")
+
+def download_update(url, latest_version):
+    """Download the latest version and close the game after completion."""
+    exe_path = os.path.join(os.getcwd(), f"beat down - {latest_version}.exe")  # Save as "beat down - {version}.exe"
+    try:
+        response = requests.get(url, stream=True)
+        with open(exe_path, "wb") as f:
+            for chunk in response.iter_content(1024):
+                f.write(chunk)
+        
+        win11toast.toast("CMT: Download Complete", "The latest version has been downloaded. you can now use the new file.")
+
+        # Close the game after downloading
+        sys.exit(0)
+    except Exception as e:
+        print(f"Download failed: {e}")
+
+# Run update check if script is in executable mode
+if getattr(sys, 'frozen', False):  # Checks if running as an exe
+    check_for_update()
 
 if not os.path.exists("./MTdata/custom_trails"):
     os.makedirs("./MTdata/custom_trails")

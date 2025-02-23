@@ -230,12 +230,30 @@
         "documentation": {}
     },
     {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
         "label": "random",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "random",
         "description": "random",
         "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "win11toast",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "win11toast",
+        "description": "win11toast",
+        "detail": "win11toast",
         "documentation": {}
     },
     {
@@ -262,6 +280,51 @@
         "importPath": "main",
         "description": "main",
         "peekOfCode": "class TrailEditor(QDialog):\n    def __init__(self, parent=None):\n        super().__init__(parent)\n        self.setWindowTitle(\"Trail Editor\")\n        self.setGeometry(200, 200, 400, 500)\n        self._layout = QVBoxLayout(self)\n        # Shape Selector\n        self.shape_selector = QComboBox()\n        self.shape_selector.editTextChanged.connect(self.updateUI)\n        self.shape_selectorL = QLabel(\"Shape:\", self.shape_selector)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "check_for_update",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def check_for_update():\n    try:\n        response = requests.get(LATEST_RELEASE_API, timeout=5)\n        response.raise_for_status()\n        latest_release = response.json()\n        latest_version = latest_release[\"tag_name\"]\n        download_url = latest_release[\"assets\"][0][\"browser_download_url\"]\n        if latest_version != release_version:\n            win11toast.toast(\n                \"CMT: Update Available\",",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "download_update",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def download_update(url, latest_version):\n    \"\"\"Download the latest version and close the game after completion.\"\"\"\n    exe_path = os.path.join(os.getcwd(), f\"beat down - {latest_version}.exe\")  # Save as \"beat down - {version}.exe\"\n    try:\n        response = requests.get(url, stream=True)\n        with open(exe_path, \"wb\") as f:\n            for chunk in response.iter_content(1024):\n                f.write(chunk)\n        win11toast.toast(\"CMT: Download Complete\", \"The latest version has been downloaded. you can now use the new file.\")\n        # Close the game after downloading",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "release_version",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "release_version = \"v1.0.1\"\n# GitHub repository details\nGITHUB_REPO = \"jacs121/custom-trail-for-the-mouse\"\nLATEST_RELEASE_API = f\"https://api.github.com/repos/{GITHUB_REPO}/releases/latest\"\ndef check_for_update():\n    try:\n        response = requests.get(LATEST_RELEASE_API, timeout=5)\n        response.raise_for_status()\n        latest_release = response.json()\n        latest_version = latest_release[\"tag_name\"]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "GITHUB_REPO",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "GITHUB_REPO = \"jacs121/custom-trail-for-the-mouse\"\nLATEST_RELEASE_API = f\"https://api.github.com/repos/{GITHUB_REPO}/releases/latest\"\ndef check_for_update():\n    try:\n        response = requests.get(LATEST_RELEASE_API, timeout=5)\n        response.raise_for_status()\n        latest_release = response.json()\n        latest_version = latest_release[\"tag_name\"]\n        download_url = latest_release[\"assets\"][0][\"browser_download_url\"]\n        if latest_version != release_version:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "LATEST_RELEASE_API",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "LATEST_RELEASE_API = f\"https://api.github.com/repos/{GITHUB_REPO}/releases/latest\"\ndef check_for_update():\n    try:\n        response = requests.get(LATEST_RELEASE_API, timeout=5)\n        response.raise_for_status()\n        latest_release = response.json()\n        latest_version = latest_release[\"tag_name\"]\n        download_url = latest_release[\"assets\"][0][\"browser_download_url\"]\n        if latest_version != release_version:\n            win11toast.toast(",
         "detail": "main",
         "documentation": {}
     },
