@@ -589,6 +589,106 @@ if not os.path.exists("./MTdata/trails/smooth.html"):
 
 """)
 
+if not os.path.exists("./MTdata/trails/rainbow smooth.html"):
+    open("./MTdata/rainbow smooth.html", "w").write(
+"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rainbow smooth mouse trail</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #00000000;
+      cursor: none;
+    }
+    
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      filter: blur(5px);
+      -webkit-filter: blur(5px);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="trailCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('trailCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let trailColor = 0
+    
+    let trail = [];
+    let mouse = { x: 0, y: 0 };
+    
+    document.addEventListener('mousemove', (e) => {
+      mouse.x = e.pageX;
+      mouse.y = e.pageY;
+      trail.push({ x: mouse.x, y: mouse.y, time: Date.now() });
+      trailColor ++
+    });
+
+    function updateTrail() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      if (trailColor >= 360) {
+        trailColor = 0
+      }
+
+      const now = Date.now();
+      trail = trail.filter(segment => now - segment.time < 1000); // Keep only recent points (1 second fade)
+
+      for (let i = 0; i < trail.length - 1; i++) {
+        const p1 = trail[i];
+        const p2 = trail[i + 1];
+
+        const alpha = 1 - (now - p1.time) / 1000; // Calculate fading alpha
+
+        // Trail color (white glow)
+        ctx.strokeStyle = `hsla(${trailColor}, 100%, 50%, ${alpha})`;
+        ctx.lineWidth = 12;
+        ctx.lineCap = "round";
+
+        // Smooth glow effect using shadowBlur
+        ctx.shadowColor = `hsla(${trailColor}, 100%, 50%, ${alpha * 0.8})`;
+        ctx.shadowBlur = alpha * 15; // Blur intensity depends on fade
+
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(updateTrail);
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    updateTrail();
+
+    function mouseMove(x, y) {
+        mouse.x = x;
+        mouse.y = y;
+        trail.push({ x: mouse.x, y: mouse.y, time: Date.now() });
+        trailColor ++
+    }
+  </script>
+</body>
+</html>
+
+""")
+
 
 # Dictionary of all available trail HTML files
 trails = {
