@@ -577,6 +577,12 @@ if not os.path.exists("./MTdata/trails/smooth.html"):
     });
 
     updateTrail();
+
+    function mouseMove(x, y) {
+        mouse.x = x;
+        mouse.y = y;
+        trail.push({ x: mouse.x, y: mouse.y, time: Date.now() });
+    }
   </script>
 </body>
 </html>
