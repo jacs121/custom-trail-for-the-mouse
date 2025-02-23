@@ -270,7 +270,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "trails = {\n    os.path.basename(file).split(\".\")[0].title(): os.path.join(os.path.dirname(__file__), file)\n    for file in glob.glob(\"./MTdata/trails/*.html\")\n}\nfor trail in glob.glob(\"./MTdata/custom_trails/*.json\"):\n    trails.update({os.path.basename(trail).split(\n        \".\")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})\nclass ScreenTrail(QWebEngineView):\n    def __init__(self, trail_path, settings={}):\n        super().__init__()",
+        "peekOfCode": "trails = {\n    os.path.basename(file).split(\".\")[0].title(): os.path.join(os.path.dirname(__file__), file)\n    for file in glob.glob(\"./MTdata/trails/*.html\")\n    for file in glob.glob(\"./trails/*.html\")\n}\nfor trail in glob.glob(\"./MTdata/custom_trails/*.json\"):\nfor trail in glob.glob(\"./custom_trails/*.json\"):\n    trails.update({os.path.basename(trail).split(\n        \".\")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})\nclass ScreenTrail(QWebEngineView):",
         "detail": "main",
         "documentation": {}
     }

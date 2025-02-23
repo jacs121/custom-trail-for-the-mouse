@@ -504,6 +504,7 @@ trails = {
 }
 
 for trail in glob.glob("./MTdata/custom_trails/*.json"):
+for trail in glob.glob("./custom_trails/*.json"):
     trails.update({os.path.basename(trail).split(
         ".")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})
 
@@ -669,6 +670,7 @@ class MainSettingsWindow(QMainWindow):
         editor = TrailEditor(self)
         if editor.exec():
             for trail in glob.glob("./MTdata/custom_trails/*.json"):
+            for trail in glob.glob("./custom_trails/*.json"):
                 trails.update({os.path.basename(trail).split(
                     ".")[0].upper(): os.path.join(os.path.dirname(__file__), trail)})
                 self.trail_selector.clear()

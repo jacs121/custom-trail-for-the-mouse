@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,7 +49,7 @@
 
 <body>
     <script>
-        function mouseMove(x, y, args) {
+        function mouseMove(x, y) {
             for (let i = 0; i < 2; i++) {
                 const star = document.createElement('div');
 
@@ -103,14 +102,13 @@
         }
 
         document.addEventListener('mousemove', (event) => {
-            mouseMove(event.clientX, event.clientY, { color: "rainbow" });
+            mouseMove(event.clientX, event.clientY);
         });
 
         document.addEventListener('click', (event) => {
-            mouseClick(event.clientX, event.clientY, {color: "rainbow"});
+            mouseClick(event.clientX, event.clientY);
         });
     </script>
 </body>
 
 </html>
-        
