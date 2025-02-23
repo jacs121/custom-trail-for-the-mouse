@@ -508,7 +508,7 @@ if not os.path.exists("./MTdata/trails/smooth.html"):
     body {
       margin: 0;
       overflow: hidden;
-      background-color: #111;
+      background-color: #00000000;
       cursor: none;
     }
     
