@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>smooth mouse trail</title>
+  <title>rainbow smooth mouse trail</title>
   <style>
     body {
       margin: 0;
@@ -31,18 +31,23 @@
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
+    let trailColor = 0
+    
     let trail = [];
     let mouse = { x: 0, y: 0 };
-
+    
     document.addEventListener('mousemove', (e) => {
       mouse.x = e.pageX;
       mouse.y = e.pageY;
       trail.push({ x: mouse.x, y: mouse.y, time: Date.now() });
+      trailColor ++
     });
 
     function updateTrail() {
       ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      if (trailColor >= 360) {
+        trailColor = 0
+      }
 
       const now = Date.now();
       trail = trail.filter(segment => now - segment.time < 1000); // Keep only recent points (1 second fade)
@@ -54,12 +59,12 @@
         const alpha = 1 - (now - p1.time) / 1000; // Calculate fading alpha
 
         // Trail color (white glow)
-        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.strokeStyle = `hsla(${trailColor}, 100%, 50%, ${alpha})`;
         ctx.lineWidth = 12;
         ctx.lineCap = "round";
 
         // Smooth glow effect using shadowBlur
-        ctx.shadowColor = `rgba(255, 255, 255, ${alpha * 0.8})`;
+        ctx.shadowColor = `hsla(${trailColor}, 100%, 50%, ${alpha * 0.8})`;
         ctx.shadowBlur = alpha * 15; // Blur intensity depends on fade
 
         ctx.beginPath();
@@ -82,6 +87,7 @@
         mouse.x = x;
         mouse.y = y;
         trail.push({ x: mouse.x, y: mouse.y, time: Date.now() });
+        trailColor ++
     }
   </script>
 </body>
